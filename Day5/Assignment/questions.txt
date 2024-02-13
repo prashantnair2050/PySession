@@ -1,0 +1,26 @@
+File Handling
+
+1. Basic File Operations: Write a Python script to create a new text file and write the string "Hello, Python!" into it. Then, read the content of the file and print it to the console.
+
+2. File Reading: Given a text file data.txt, write a Python program to read and print the first 5 lines of the file.
+
+3. File Writing: How would you append the text "Welcome to Python programming." to an existing file named append.txt without overwriting its current content?
+
+4. File Seeking: Write a Python script to open a file named seek.txt, write "Python is fun!" at the beginning of the file, and then read the entire file content.
+
+
+CSV Files
+1. Reading CSV: Write a Python program to read a CSV file named auto-data.csv using csv.reader and print each row.
+2. Writing CSV: Using csv.writer, create a CSV file named output.csv and write the rows [["Name", "Age"], ["Alice", 24], ["Bob", 22]] to it.
+3. DictReader Usage: Explain how csv.DictReader differs from csv.reader. Write a Python script that reads students.csv using csv.DictReader and prints each row as a dictionary.
+4. DictWriter with Different Delimiter: Demonstrate how to use csv.DictWriter to write a list of dictionaries to a file named custom_delimiter.csv with a semicolon (;) as the delimiter.
+5. Handling Headers: Write a Python program that reads a CSV file and prints just the headers.
+
+ZIP Files
+1. Creating ZIP Archives: Write a Python script to create a ZIP archive named archive.zip and add two files to it, file1.txt and file2.txt.
+2. Extracting ZIP Archives: How would you extract a specific file named document.txt from a ZIP archive documents.zip into a directory named extracted_docs?
+3. Listing ZIP Contents: Write a Python program that opens a ZIP file named sample.zip and prints the names of all the files and directories it contains.
+
+DateTime
+1. Current DateTime: Write a Python script to display the current date and time in the format "YYYY-MM-DD HH:MM:SS".
+2. Time Difference: Write a Python program that calculates the number of days between two dates. The dates should be input by the user in the format "YYYY-MM-DD".
