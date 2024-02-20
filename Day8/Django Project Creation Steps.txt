@@ -1,0 +1,22 @@
+
+
+
+
+
+
+1. Create a folder named djangoproject in Desktop
+2. Open VSCode and open djangoproject folder (File > open folder)
+3. Open Terminal
+4. Create a new project using the following command in Terminal
+
+	django-admin startproject my_site
+
+5. Get inside the project folder in Terminal
+
+	cd my_site
+
+6. Run the server to check if project is working properly in Terminal 
+
+	python manage.py runserver
+
+7. Open Browser and check the location http://127.0.0.1:8000
