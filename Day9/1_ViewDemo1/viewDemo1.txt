@@ -1,0 +1,164 @@
+Example of Views
+====================
+
+1. Go to views.py and create a test function
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+
+def simple_view(request):
+    return HttpResponse('<h1>Welcome to my page</h1>')
+
+2. Create urls.py inside app (first_app)
+
+from django.urls import path
+from . import views
+
+urlpatterns=[
+    path('',views.simple_view)
+]
+
+3. Update and add application entry in project site's url.py
+
+from django.contrib import admin
+from django.urls import path,include
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('first_app/', include('first_app.urls'))
+]
+
+
+4. Start the server
+
+python manage.py runserver
+
+Navigate to http://127.0.0.1:8000 and check if entry of first_app visible
+
+To access the page http://127.0.0.1:8000/first_app/
+
+
+
+
+
+
+Use html file(web page) on views.py
+=======================================
+
+
+1. Create a folder named templates in base folder
+2. Create folder named first_app inside templates folder
+3. Add a new file named example.html and create a sample page
+4. Edit views.py to call the html file from templates folder
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+
+def simple_view(request):
+    return render(request,'first_app/example.html')
+
+def simple_view2(request):
+    return HttpResponse('<h1>Page 2klkl</h1>')
+
+
+5. Make the project aware of new templates location. Go to settings.py in project folder and add the following
+
+import os
+
+
+Under TEMPLATES variable edit DIR as shown below
+
+'DIRS': [os.path.join(BASE_DIR,'templates/')],
+
+
+
+6. Save settings.py and views.py and check if page is accessible
+
+
+
+
+
+Registering Apps in the Project Site
+=======================================
+
+0. Delete entries from DIR in settings.py and Delete templates folder from my_site
+
+1. Create a new templates folder inside first_app . Create new folder named first_app and add example.html in the same
+
+2. Edit views.py
+
+def simple_view(request):
+    return render(request,'first_app/example.html')
+
+
+3. Initiate migrate operation with an intention to register the app
+
+Go to terminal and type the following command
+
+python manage.py migrate
+
+
+Ensure the logs says OK to every entry registered
+
+
+4. Add new entry for first_app in settings.py
+
+INSTALLED_APPS = [
+    'first_app.apps.FirstAppConfig',    <-------------------- This entry you need to add
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+5. Initiate a change in migration
+
+python manage.py makemigrations first_app
+
+
+6. Commit the migration
+
+python manage.py migrate
+
+
+7. Run the server and check if page accessible.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
