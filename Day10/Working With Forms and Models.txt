@@ -1,0 +1,185 @@
+Create a Django Application that accepts data from user like first name, last name, salary, department through simple HTML form. Ensure you collect department from dropdown list. Data collected shall be stored in database(sqlite). Also create another form where if user enters first name, it returns the record and prints in same html page
+
+
+Solution
+
+
+Application will include:
+
+1. A model to store employee details. (Database ----- Create it using Model feature in Django)
+2. A form to input new employee data, including a dropdown for the department. (Django Forms)
+3. Another form to search for an employee by first name and display the result. (Django Forms)
+
+
+Step1: Create a new Django project and navigate into it:
+
+django-admin startproject employee_project
+cd employee_project
+
+
+Step2: Create a new Django app:
+
+python manage.py startapp employee_app
+
+Step3:  Define the Model (DB)
+
+In employee_app/models.py, define a model for the employee:
+
+from django.db import models
+
+class Employee(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    salary = models.DecimalField(max_digits=10, decimal_places=2)
+    DEPARTMENT_CHOICES = [
+        ('IT', 'Information Technology'),
+        ('HR', 'Human Resources'),
+        ('FIN', 'Finance'),
+        ('MKT', 'Marketing'),
+    ]
+    department = models.CharField(max_length=3, choices=DEPARTMENT_CHOICES, default='IT')
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+Step4: Install employee_app via settings.py of employee_project
+
+INSTALLED_APPS = [
+    'employee_app.apps.EmployeeAppConfig'
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+Step5: Run migrations to create your database schema
+
+python manage.py makemigrations
+python manage.py migrate
+
+
+Step6: Creating Forms
+In employee_app/forms.py, create forms for submitting new employees and searching by first name:
+
+from django import forms
+from .models import Employee
+
+class EmployeeForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = ['first_name', 'last_name', 'salary', 'department']
+
+class SearchForm(forms.Form):
+    first_name = forms.CharField(max_length=100)
+
+
+Step7: Creating Views
+In employee_app/views.py, create views to handle form submissions and searches:
+
+from django.shortcuts import render, redirect
+from .models import Employee
+from .forms import EmployeeForm, SearchForm
+
+def add_employee(request):
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('add_employee')
+    else:
+        form = EmployeeForm()
+    return render(request, 'employee_app/add_employee.html', {'form': form})
+
+def search_employee(request):
+    employees = None
+    if 'first_name' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            employees = Employee.objects.filter(first_name__icontains=first_name)
+    else:
+        form = SearchForm()
+    return render(request, 'employee_app/search_employee.html', {'form': form, 'employees': employees})
+
+
+Step8: Configuring URLs
+In employee_project/urls.py, include your app's URLs:
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('employee/', include('employee_app.urls'))
+]
+
+
+
+Then, in employee_app/, create a file named urls.py and define your app-specific URLs:
+
+from django.urls import path
+from .views import add_employee, search_employee
+
+urlpatterns = [
+    path('add/', add_employee, name='add_employee'),
+    path('search/', search_employee, name='search_employee'),
+]
+
+
+Step9: Creating Templates
+Create a directory named templates/employee_app inside employee_app folder, and then create add_employee.html and search_employee.html inside the templates directory. 
+
+Here's a basic example for add_employee.html:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Employee</title>
+</head>
+<body>
+    <h2>Add New Employee</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+
+and for search_employee.html:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Employee</title>
+</head>
+<body>
+    <h2>Search Employee by First Name</h2>
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+    {% if employees %}
+        <h3>Results:</h3>
+        <ul>
+            {% for employee in employees %}
+                <li>{{ employee.first_name }} {{ employee.last_name }} - {{ employee.department }} </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
+
+
+
+Step 10: Running Your Server
+Finally, run your server:
+
+python manage.py runserver
+
+
+
+You can now navigate to http://127.0.0.1:8000/employee/add/ to add new employees and to http://127.0.0.1:8000/employee/search/ to search for employees by first name.
