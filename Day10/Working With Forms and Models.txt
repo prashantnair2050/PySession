@@ -183,3 +183,50 @@ python manage.py runserver
 
 
 You can now navigate to http://127.0.0.1:8000/employee/add/ to add new employees and to http://127.0.0.1:8000/employee/search/ to search for employees by first name.
+
+
+
+How to access Django Admin Page?
+=====================================
+
+1. Create Admin user
+
+python manage.py createsuperuser
+
+
+Step2: Register your model in admin.py
+
+
+from django.contrib import admin
+from .models import Employee
+
+
+admin.site.register(Employee)
+
+
+Step3: Start the server
+
+python manage.py runserver
+
+
+Step4: To access admin page
+
+http://127.0.0.1:8000/admin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
