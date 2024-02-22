@@ -46,7 +46,7 @@ class Employee(models.Model):
 Step4: Install employee_app via settings.py of employee_project
 
 INSTALLED_APPS = [
-    'employee_app.apps.EmployeeAppConfig'
+    'employee_app.apps.EmployeeAppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
